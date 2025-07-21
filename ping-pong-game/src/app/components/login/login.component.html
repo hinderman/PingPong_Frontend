@@ -1,0 +1,89 @@
+<div class="login-container">
+  <div class="login-content">
+    <!-- Header -->
+    <div class="header">
+      <a class="logo" (click)="navigateHome()">
+        <div class="logo-icon">🏓</div>
+        <span class="logo-text">PingPong Pro</span>
+      </a>
+    </div>
+
+    <!-- Login Form -->
+    <div class="login-card">
+      <div class="card-header">
+        <h2 class="card-title">Welcome Back</h2>
+        <p class="card-description">Login to continue your ping pong journey</p>
+      </div>
+
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+        <!-- Email Field -->
+        <div class="form-group">
+          <label for="email" class="form-label">Email</label>
+          <input
+            id="email"
+            type="email"
+            formControlName="email"
+            placeholder="developer@example.com"
+            class="form-input"
+            [class.error]="hasFieldError('email')"
+          />
+          <div class="error-message" *ngIf="hasFieldError('email')">
+            <span class="error-icon">❌</span>
+            {{ getFieldError('email') }}
+          </div>
+        </div>
+
+        <!-- Password Field -->
+        <div class="form-group">
+          <label for="password" class="form-label">Password</label>
+          <input
+            id="password"
+            type="password"
+            formControlName="password"
+            placeholder="Enter your password"
+            class="form-input"
+            [class.error]="hasFieldError('password')"
+          />
+          <div class="error-message" *ngIf="hasFieldError('password')">
+            <span class="error-icon">❌</span>
+            {{ getFieldError('password') }}
+          </div>
+        </div>
+
+        <!-- Remember Me -->
+        <div class="form-group checkbox-group">
+          <label class="checkbox-label">
+            <input
+              type="checkbox"
+              formControlName="rememberMe"
+              class="checkbox-input"
+            />
+            <span class="checkbox-text">Remember me</span>
+          </label>
+        </div>
+
+        <!-- Error Message -->
+        <div class="error-message" *ngIf="errorMessage">
+          <span class="error-icon">❌</span>
+          {{ errorMessage }}
+        </div>
+
+        <!-- Submit Button -->
+        <button
+          type="submit"
+          class="btn btn-primary btn-full"
+          [disabled]="isLoading"
+        >
+          <span *ngIf="isLoading" class="loading-spinner">⏳</span>
+          {{ isLoading ? 'Logging in...' : 'Login' }}
+        </button>
+      </form>
+
+      <div class="register-link">
+        <p>Don't have an account? 
+          <a (click)="navigateToRegister()" class="link">Register here</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

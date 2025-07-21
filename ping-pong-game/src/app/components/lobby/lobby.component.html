@@ -1,0 +1,114 @@
+<div class="lobby-container">
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="nav-content">
+      <a routerLink="/" class="logo">
+        <div class="logo-icon">🏓</div>
+        <span class="logo-text">PingPong Pro</span>
+      </a>
+
+      <div class="nav-buttons">
+        <button class="btn btn-ghost" (click)="navigateToRanking()">
+          🏆 Rankings
+        </button>
+        <button class="btn btn-ghost" (click)="logout()">
+          🚪 Logout
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="lobby-content">
+    <!-- Header -->
+    <div class="header">
+      <h1 class="title">Game Lobby</h1>
+      <p class="subtitle">Create a room or join an existing one to start playing</p>
+    </div>
+
+    <div class="main-grid">
+      <!-- Create Room -->
+      <div class="room-card">
+        <div class="card-header">
+          <h3 class="card-title">
+            ➕ Create Room
+          </h3>
+          <p class="card-description">Start a new game and invite another player</p>
+        </div>
+
+        <div class="card-content">
+          <div *ngIf="!currentRoom">
+            <button class="btn btn-primary btn-full" (click)="createRoom()" [disabled]="isCreatingRoom">
+              <span *ngIf="isCreatingRoom" class="loading-spinner">⏳</span>
+              {{ isCreatingRoom ? 'Creating Room...' : '➕ Create New Room' }}
+            </button>
+          </div>
+
+          <div *ngIf="currentRoom" class="room-info">
+            <div class="room-code-section">
+              <div class="room-code-header">
+                <label class="form-label">Room Code</label>
+                <span class="status-badge active">Active</span>
+              </div>
+              <div class="room-code-display">
+                <code class="room-code">{{ currentRoom?.code }}</code>
+                <button class="btn btn-outline btn-sm" (click)="copyRoomCode()">
+                  {{ copied ? '✅' : '📋' }}
+                </button>
+              </div>
+            </div>
+
+            <div class="waiting-status">
+              👥 Waiting for another player...
+            </div>
+
+            <button class="btn btn-success btn-full" (click)="startGame()">
+              Start Game (Demo)
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Join Room -->
+      <div class="room-card">
+        <div class="card-header">
+          <h3 class="card-title">
+            👥 Join Room
+          </h3>
+          <p class="card-description">Enter a room code to join an existing game</p>
+        </div>
+
+        <div class="card-content">
+          <div class="form-group">
+            <label for="roomCode" class="form-label">Room Code</label>
+            <input id="roomCode" type="text" [(ngModel)]="roomCode" placeholder="Enter 6-digit code"
+              class="form-input room-code-input" maxlength="6" (input)="roomCode = roomCode.toUpperCase()" />
+          </div>
+
+          <button class="btn btn-secondary btn-full" (click)="joinRoom()"
+            [disabled]="!roomCode.trim() || isJoiningRoom">
+            <span *ngIf="isJoiningRoom" class="loading-spinner">⏳</span>
+            {{ isJoiningRoom ? 'Joining Room...' : '👥 Join Room' }}
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Stats -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-value">{{ stats.activePlayers | number }}</div>
+        <div class="stat-label">Active Players</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-value">{{ stats.activeRooms }}</div>
+        <div class="stat-label">Active Rooms</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-value">{{ stats.gamesToday | number }}</div>
+        <div class="stat-label">Games Played Today</div>
+      </div>
+    </div>
+  </div>
+</div>

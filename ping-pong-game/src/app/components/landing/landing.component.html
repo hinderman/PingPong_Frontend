@@ -1,0 +1,70 @@
+<div class="landing-container">
+  <!-- Header -->
+  <header class="header">
+    <div class="container">
+      <div class="nav-content">
+        <div class="logo">
+          <div class="logo-icon">🏓</div>
+          <span class="logo-text">PingPong Pro</span>
+        </div>
+        <div class="nav-buttons">
+          <button class="btn btn-ghost" (click)="navigateToLogin()">Login</button>
+          <button class="btn btn-primary" (click)="navigateToRegister()">Register</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <main class="hero-section">
+    <div class="container">
+      <div class="hero-content">
+        <h1 class="hero-title">
+          Real-Time Multiplayer
+          <span class="gradient-text">Ping Pong</span>
+        </h1>
+        <p class="hero-description">
+          Challenge developers worldwide in fast-paced ping pong matches. Built with modern web technologies for
+          seamless real-time gameplay.
+        </p>
+
+        <div class="hero-buttons">
+          <button class="btn btn-primary btn-large" (click)="navigateToRegister()">
+            Start Playing
+          </button>
+          <button class="btn btn-outline btn-large" (click)="navigateToLogin()">
+            Login to Continue
+          </button>
+        </div>
+
+        <!-- Features Grid -->
+        <div class="features-grid">
+          <div class="feature-card" *ngFor="let feature of features">
+            <div class="feature-icon">{{ feature.icon }}</div>
+            <h3 class="feature-title">{{ feature.title }}</h3>
+            <p class="feature-description">{{ feature.description }}</p>
+          </div>
+        </div>
+
+        <!-- How It Works -->
+        <div class="how-it-works">
+          <h2 class="section-title">How It Works</h2>
+          <div class="steps-grid">
+            <div class="step" *ngFor="let step of steps">
+              <div class="step-number">{{ step.number }}</div>
+              <h3 class="step-title">{{ step.title }}</h3>
+              <p class="step-description">{{ step.description }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; 2024 PingPong Pro. Built for developers, by developers.</p>
+    </div>
+  </footer>
+</div>

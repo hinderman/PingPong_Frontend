@@ -1,0 +1,173 @@
+<div class="ranking-container">
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="nav-content">
+      <a routerLink="/" class="logo">
+        <div class="logo-icon">🏓</div>
+        <span class="logo-text">PingPong Pro</span>
+      </a>
+
+      <div class="nav-buttons">
+        <button class="btn btn-ghost" (click)="navigateToLobby()">
+          🏠 Lobby
+        </button>
+        <button class="btn btn-ghost" (click)="logout()">
+          🚪 Logout
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="ranking-content">
+    <!-- Header -->
+    <div class="header">
+      <div class="header-title">
+        <div class="title-icon">🏆</div>
+        <h1 class="title">Global Rankings</h1>
+      </div>
+      <p class="subtitle">Top players from around the world</p>
+    </div>
+
+    <!-- Top 3 Podium -->
+    <div class="podium" *ngIf="!isLoading && rankings.length >= 3">
+      <div class="podium-grid">
+        <div class="podium-player second-place">
+          <div class="rank-icon">🥈</div>
+          <div class="rank-badge runner-up">Runner-up</div>
+          <div class="player-email">{{ rankings[1].email }}</div>
+          <div class="player-score">{{ rankings[1].topScore }}</div>
+          <div class="player-stats">{{ rankings[1].gamesPlayed }} games • {{ rankings[1].winRate }}% win rate</div>
+        </div>
+
+        <div class="podium-player first-place">
+          <div class="rank-icon">👑</div>
+          <div class="rank-badge champion">Champion</div>
+          <div class="player-email">{{ rankings[0].email }}</div>
+          <div class="player-score">{{ rankings[0].topScore }}</div>
+          <div class="player-stats">{{ rankings[0].gamesPlayed }} games • {{ rankings[0].winRate }}% win rate</div>
+        </div>
+
+        <div class="podium-player third-place">
+          <div class="rank-icon">🥉</div>
+          <div class="rank-badge third-place">3rd Place</div>
+          <div class="player-email">{{ rankings[2].email }}</div>
+          <div class="player-score">{{ rankings[2].topScore }}</div>
+          <div class="player-stats">{{ rankings[2].gamesPlayed }} games • {{ rankings[2].winRate }}% win rate</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Search and Filters -->
+    <div class="search-section">
+      <div class="search-container">
+        <div class="search-input-wrapper">
+          <div class="search-icon">🔍</div>
+          <input
+            type="text"
+            [(ngModel)]="searchTerm"
+            (input)="onSearchChange()"
+            placeholder="Search by email..."
+            class="search-input"
+          />
+        </div>
+        <div class="search-results">Showing {{ filteredRankings.length }} players</div>
+      </div>
+    </div>
+
+    <!-- Rankings Table -->
+    <div class="table-section">
+      <div class="table-header">
+        <h2 class="table-title">Leaderboard</h2>
+      </div>
+
+      <div class="table-container" *ngIf="!isLoading">
+        <table class="rankings-table">
+          <thead>
+            <tr>
+              <th (click)="sortBy('rank')" class="sortable">
+                <div class="header-content">
+                  Rank
+                  <span class="sort-icon">↕️</span>
+                </div>
+              </th>
+              <th>Player</th>
+              <th (click)="sortBy('topScore')" class="sortable">
+                <div class="header-content">
+                  Top Score
+                  <span class="sort-icon">↕️</span>
+                </div>
+              </th>
+              <th (click)="sortBy('gamesPlayed')" class="sortable">
+                <div class="header-content">
+                  Games
+                  <span class="sort-icon">↕️</span>
+                </div>
+              </th>
+              <th (click)="sortBy('winRate')" class="sortable">
+                <div class="header-content">
+                  Win Rate
+                  <span class="sort-icon">↕️</span>
+                </div>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let player of filteredRankings" class="table-row">
+              <td class="rank-cell">
+                <div class="rank-display">{{ getRankIcon(player.rank) }}</div>
+              </td>
+              <td class="player-cell">
+                <div class="player-info">
+                  <span class="player-email">{{ player.email }}</span>
+                  <span *ngIf="getRankBadge(player.rank)" 
+                        class="rank-badge" 
+                        [ngClass]="getRankBadge(player.rank)!.class">
+                    {{ getRankBadge(player.rank)!.text }}
+                  </span>
+                </div>
+              </td>
+              <td class="score-cell">
+                <span class="top-score">{{ player.topScore }}</span>
+              </td>
+              <td class="games-cell">{{ player.gamesPlayed }}</td>
+              <td class="winrate-cell">
+                <span class="win-rate" [ngClass]="getWinRateClass(player.winRate)">
+                  {{ player.winRate }}%
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Loading State -->
+      <div *ngIf="isLoading" class="loading-state">
+        <div class="loading-spinner">⏳</div>
+        <div class="loading-text">Loading rankings...</div>
+      </div>
+    </div>
+
+    <!-- Stats Summary -->
+    <div class="stats-summary">
+      <div class="stat-card">
+        <div class="stat-value">{{ stats.totalPlayers | number }}</div>
+        <div class="stat-label">Total Players</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-value">{{ stats.highestScore }}</div>
+        <div class="stat-label">Highest Score</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-value">{{ stats.totalGames | number }}</div>
+        <div class="stat-label">Total Games</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-value">{{ stats.avgWinRate }}%</div>
+        <div class="stat-label">Avg Win Rate</div>
+      </div>
+    </div>
+  </div>
+</div>

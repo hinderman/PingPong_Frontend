@@ -1,0 +1,81 @@
+<div class="game-container">
+  <!-- Game Header -->
+  <div class="game-header">
+    <div class="header-content">
+      <button class="btn btn-ghost" (click)="backToLobby()">
+        🏠 Back to Lobby
+      </button>
+
+      <div class="game-info">
+        <div class="room-info">Room: ABC123</div>
+        <div class="time-info">Time: {{ formatTime(gameTime) }}</div>
+      </div>
+
+      <div class="game-controls">
+        <button *ngIf="!isPlaying && !isPaused" class="btn btn-success btn-sm" (click)="startGame()">
+          ▶️ Start
+        </button>
+        <button *ngIf="isPlaying || isPaused" class="btn btn-outline btn-sm" (click)="pauseGame()">
+          {{ isPaused ? '▶️ Resume' : '⏸️ Pause' }}
+        </button>
+        <button class="btn btn-outline btn-sm" (click)="resetGame()">
+          🔄 Reset
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scoreboard -->
+  <div class="scoreboard">
+    <div class="scoreboard-content">
+      <div class="player-score">
+        <div class="player-badge player1">Player 1</div>
+        <div class="score">{{ player1Score }}</div>
+        <div class="controls-hint">W/S Keys</div>
+      </div>
+
+      <div class="vs-divider">VS</div>
+
+      <div class="player-score">
+        <div class="player-badge player2">Player 2</div>
+        <div class="score">{{ player2Score }}</div>
+        <div class="controls-hint">Arrow Keys</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Game Canvas -->
+  <div class="game-area">
+    <div class="canvas-container">
+      <canvas #gameCanvas class="game-canvas"></canvas>
+
+      <!-- Game Overlays -->
+      <div *ngIf="isPaused" class="game-overlay">
+        <div class="overlay-message">PAUSED</div>
+      </div>
+
+      <div *ngIf="!isPlaying && !isPaused && !gameEnded" class="game-overlay">
+        <div class="overlay-content">
+          <div class="overlay-title">Press Start to Begin</div>
+          <div class="overlay-subtitle">Use W/S and Arrow Keys to control paddles</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Game Over Modal -->
+  <div *ngIf="gameEnded" class="game-over-modal">
+    <div class="modal-content">
+      <div class="winner-icon">🏆</div>
+      <h2 class="winner-title" [class]="winnerColor">{{ winner }} Wins!</h2>
+      <div class="final-score">
+        Final Score: {{ player1Score }} - {{ player2Score }}
+      </div>
+      <div class="game-duration">Game Time: {{ formatTime(gameTime) }}</div>
+      <div class="modal-buttons">
+        <button class="btn btn-primary" (click)="playAgain()">Play Again</button>
+        <button class="btn btn-outline" (click)="backToLobby()">Back to Lobby</button>
+      </div>
+    </div>
+  </div>
+</div>
